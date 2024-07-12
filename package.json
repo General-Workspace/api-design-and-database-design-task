@@ -1,0 +1,10 @@
+{
+  "name": "api-design-and-database-design-task",
+  "packageManager": "yarn@4.3.1",
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-openapi-validator": "^5.2.0",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
+  }
+}
