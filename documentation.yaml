@@ -46,6 +46,10 @@ components:
             - user
             - admin
           example: user
+        inviteCode:
+          type: string
+          example: abcdef1234567890
+
 
     Messaging:
       type: object
@@ -3270,4 +3274,3 @@ paths:
                   message:
                     type: string
                     example: Internal Server Error
-  
