@@ -313,6 +313,25 @@ components:
             - survey
           example: chat
 
+    Charts:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum:
+            - line
+            - bar
+            - pie
+            - doughnut
+          example: line
+        data:
+          type: object
+          example:
+            { labels: ["January", "February", "March"], data: [10, 20, 30] }
+
 paths:
   # Authentication API
   /auth/register:
@@ -3984,6 +4003,156 @@ paths:
                   message:
                     type: string
                     example: Widget not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    delete:
+      summary: Delete a widget by ID
+      tags:
+        - Random Data
+      parameters:
+        - name: widgetId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the widget to delete
+      responses:
+        "200":
+          description: Widget deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Widget deleted successfully
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Widget not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  # Charts
+  /api/charts:
+    get:
+      summary: Get chart data
+      tags:
+        - Charts
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chartId:
+                    type: string
+                    example: 123e4567-e89b-12d3-a456-426614174000
+                  chartName:
+                    type: string
+                    example: Chart 1
+                  chartType:
+                    type: string
+                    example: type1
+                  chartData:
+                    type: object
+                    properties:
+                      data1:
+                        type: string
+                        example: value1
+                      data2:
+                        type: string
+                        example: value2
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+  /api/chart:
+    get:
+      summary: Get Chart by time range
+      tags:
+        - Charts
+      parameters:
+        - name: timeRange
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Time range for the chart data
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chartId:
+                    type: string
+                    example: 123e4567-e89b-12d3-a456-426614174000
+                  chartName:
+                    type: string
+                    example: Chart 1
+                  chartType:
+                    type: string
+                    example: type1
+                  chartData:
+                    type: object
+                    properties:
+                      data1:
+                        type: string
+                        example: value1
+                      data2:
+                        type: string
+                        example: value2
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
         "500":
           description: Internal Server Error
           content:
