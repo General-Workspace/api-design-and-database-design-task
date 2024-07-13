@@ -59,3 +59,5 @@ The API design is done using OpenAPI. The API design is available in the `docume
 ## Database Design
 
 View the database design [here](https://drive.google.com/file/d/1yVrjB18378ETqUxgr3wvKq_ghm55VoNV/view?usp=sharing)
+
+![Database Design](https://drive.google.com/uc?export=view&id=1yVrjB18378ETqUxgr3wvKq_ghm55VoNV)
