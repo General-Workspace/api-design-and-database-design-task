@@ -4,7 +4,7 @@ info:
   description: Group task for API Design in the HNG internship
   version: 1.0.0
 servers:
-  - url: https://api-design-hng-0eff3e6208d2.herokuapp.com/api-docs/
+  - url: https://api-design-hng-0eff3e6208d2.herokuapp.com/
     description: Prod Documentation
   - url: http://localhost:1234
     description: Local Server
