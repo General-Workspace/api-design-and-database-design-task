@@ -50,7 +50,6 @@ components:
           type: string
           example: abcdef1234567890
 
-
     Messaging:
       type: object
       required:
@@ -292,6 +291,27 @@ components:
         region:
           type: string
           example: Nigeria
+
+    Widgets:
+      type: object
+      required:
+        - name
+        - description
+        - type
+      properties:
+        name:
+          type: string
+          example: Chat Widget
+        description:
+          type: string
+          example: A chat widget for customer support
+        type:
+          type: string
+          enum:
+            - chat
+            - feedback
+            - survey
+          example: chat
 
 paths:
   # Authentication API
@@ -3752,3 +3772,225 @@ paths:
                   message:
                     type: string
                     example: An error occurred while updating region preference
+
+  # Random Data
+  /api/widget:
+    get:
+      summary: Get random widget data
+      tags:
+        - Random Data
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  widgetId:
+                    type: string
+                    example: 123e4567-e89b-12d3-a456-426614174000
+                  widgetName:
+                    type: string
+                    example: Widget 1
+                  widgetType:
+                    type: string
+                    example: type1
+                  widgetData:
+                    type: object
+                    properties:
+                      data1:
+                        type: string
+                        example: value1
+                      data2:
+                        type: string
+                        example: value2
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /api/widget/{widgetId}:
+    get:
+      summary: Get a single widget by ID
+      tags:
+        - Random Data
+      parameters:
+        - name: widgetId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the widget to get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  widgetId:
+                    type: string
+                    example: 123e4567-e89b-12d3-a456-426614174000
+                  widgetName:
+                    type: string
+                    example: Widget 1
+                  widgetType:
+                    type: string
+                    example: type1
+                  widgetData:
+                    type: object
+                    properties:
+                      data1:
+                        type: string
+                        example: value1
+                      data2:
+                        type: string
+                        example: value2
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Widget not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    put:
+      summary: Update contents of a widget by ID
+      tags:
+        - Random Data
+      parameters:
+        - name: widgetId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the widget to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                widgetName:
+                  type: string
+                  example: Widget 1
+                widgetType:
+                  type: string
+                  example: type1
+                widgetData:
+                  type: object
+                  properties:
+                    data1:
+                      type: string
+                      example: value1
+                    data2:
+                      type: string
+                      example: value2
+      responses:
+        "200":
+          description: Widget updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Widget updated successfully
+                  payload:
+                    type: object
+                    properties:
+                      widgetId:
+                        type: string
+                        example: 123e4567-e89b-12d3-a456-426614174000
+                      widgetName:
+                        type: string
+                        example: Widget 1
+                      widgetType:
+                        type: string
+                        example: type1
+                      widgetData:
+                        type: object
+                        properties:
+                          data1:
+                            type: string
+                            example: value1
+                          data2:
+                            type: string
+                            example: value2
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: 2021-08-01T12:00:00Z
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: 2021-08-01T12:00:00Z
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Widget not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
