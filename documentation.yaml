@@ -276,6 +276,19 @@ components:
           type: string
           example: 1234567890
 
+    LanguageAndRegion:
+      type: object
+      required:
+        - language
+        - region
+      properties:
+        language:
+          type: string
+          example: English
+        region:
+          type: string
+          example: Nigeria
+
 paths:
   # Authentication API
   /auth/register:
@@ -3505,3 +3518,138 @@ paths:
                   message:
                     type: string
                     example: Internal Server Error
+
+  # Language and Region
+  /settings/language:
+    post:
+      summary: User sets their language preference
+      tags:
+        - Language and Region
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language:
+                  type: string
+                  example: en-US
+      responses:
+        "200":
+          description: Language preference set successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Language preference set successfully
+        "400":
+          description: Bad request (invalid language value)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid language value
+
+      get:
+        summary: Fetch user language preference
+        tags:
+          - Language and Region
+        security:
+          - bearerAuth: []
+        responses:
+          "200":
+            description: Language preference fetched successfully
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    language:
+                      type: string
+                      example: en-US
+          "500":
+            description: Internal Server Error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: An error occurred while fetching language preference
+
+  /settings/region:
+    post:
+      summary: User sets their region preference
+      tags:
+        - Language and Region
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                region:
+                  type: string
+                  example: US
+      responses:
+        "200":
+          description: Region preference set successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Region preference set successfully
+        "400":
+          description: Bad request (invalid region value)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid region value
+
+    get:
+      summary: Fetch user region preference
+      tags:
+        - Language and Region
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Region preference fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  region:
+                    type: string
+                    example: US
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: An error occurred while fetching region preference
