@@ -3129,3 +3129,145 @@ paths:
                   message:
                     type: string
                     example: Internal Server Error
+
+  # Settings and Profile
+  /settings:
+    get:
+      summary: Get user settings
+      tags:
+        - Settings
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                    example: 123e4567-e89b-12d3-a456-426614174000
+                  emailNotifications:
+                    type: boolean
+                    example: true
+                  smsNotifications:
+                    type: boolean
+                    example: false
+                  theme:
+                    type: string
+                    example: dark
+                  language:
+                    type: string
+                    example: en-US
+                  timezone:
+                    type: string
+                    example: America/New_York
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /settings/profile:
+    get:
+      summary: Get user profile settings
+      tags:
+        - Profile Settings
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                    example: 123e4567-e89b-12d3-a456-426614174000
+                  firstName:
+                    type: string
+                    example: Jane
+                  lastName:
+                    type: string
+                    example: Doe
+                  email:
+                    type: string
+                    format: email
+                    example: jane@example.com
+                  phoneNumber:
+                    type: string
+                    example: +1234567890
+                  address:
+                    type: object
+                    properties:
+                      street:
+                        type: string
+                        example: 123 Main St
+                      city:
+                        type: string
+                        example: Anytown
+                      state:
+                        type: string
+                        example: CA
+                      zip:
+                        type: string
+                        example: 12345
+                  avatarUrl:
+                    type: string
+                    example: https://example.com/avatar.jpg
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+  
