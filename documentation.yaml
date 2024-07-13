@@ -47,7 +47,75 @@ components:
             - admin
           example: user
 
+    Messaging:
+      type: object
+      required:
+        - subject
+        - body
+        - recipient
+
+      properties:
+        subject:
+          type: string
+          example: Hello
+        body:
+          type: string
+          example: Hello, World!
+        recipient:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: 123e4567-e89b-12d3-a456-426614174000
+              email:
+                type: string
+                format: email
+                example: jane@test.com
+
+    Payments:
+      type: object
+      required:
+        - amount
+        - currency
+        - cardNumber
+        - expiryDate
+        - cvv
+
+      properties:
+        amount:
+          type: number
+          example: 1000
+        currency:
+          type: string
+          example: NGN
+        cardNumber:
+          type: string
+          example: 1234 5678 9101 1121
+        expiryDate:
+          type: string
+          example: 12/23
+        cvv:
+          type: string
+          example: 123
+
+    Organisations:
+      type: object
+      required:
+        - name
+        - description
+
+      properties:
+        name:
+          type: string
+          example: HNG
+        description:
+          type: string
+          example: We are a tech company
+
 paths:
+  # Authentication API
   /auth/register:
     post:
       summary: Register a new user
@@ -224,3 +292,91 @@ paths:
                   message:
                     type: string
                     example: Internal Server Error
+
+  # Messaging API
+  /messaging/users:
+    post:
+      summary: Send message to users
+      tags:
+        - Messaging
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Messaging"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Message sent successfully
+                  payload:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 123e4567-e89b-12d3-a456-426614174000
+                      subject:
+                        type: string
+                        example: Hello
+                      body:
+                        type: string
+                        example: Hello, World!
+                      recipient:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: 123e4567-e89b-12d3-a456-426614174000
+                            email:
+                              type: string
+                              format: email
+                              example: jane@example.com
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  # Payments API
+
+  # Users API
+
+  # Organisations API
+
+  # Super Admin API
