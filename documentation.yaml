@@ -1,0 +1,129 @@
+openapi: 3.0.0
+info:
+  title: API Design Task
+  description: Group task for API Design in the HNG internship
+  version: 1.0.0
+servers:
+  - url: http://localhost:3001
+    description: Local Server
+  - url: https://swagger-live.com
+    description: Prod Documentation
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Authentication:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+        - role
+
+      properties:
+        firstName:
+          type: string
+          example: Jane
+        lastName:
+          type: string
+          example: Doe
+        email:
+          type: string
+          format: email
+          example: jane@example.com
+        password:
+          type: string
+          example: password
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+          example: user
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Authentication"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User created successfully
+                  payload:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 123e4567-e89b-12d3-a456-426614174000
+                      firstName:
+                        type: string
+                        example: Jane
+                      lastName:
+                        type: string
+                        example: Doe
+                      email:
+                        type: string
+                        format: email
+                        example: john@example.com
+                      role:
+                        type: string
+                        example: user
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: 2021-08-01T12:00:00Z
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: 2021-08-01T12:00:00Z
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email already exists
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error

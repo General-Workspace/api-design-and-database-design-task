@@ -1,6 +1,12 @@
 {
   "name": "api-design-and-database-design-task",
   "packageManager": "yarn@4.3.1",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
   "dependencies": {
     "express": "^4.19.2",
     "express-openapi-validator": "^5.2.0",
