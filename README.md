@@ -12,7 +12,7 @@ This is a simple API and Database design task. The task is to design a simple AP
 
 - [API Design](https://github.com/HNGi11/api-design-and-database-design-task/blob/main/documentation.yaml)
 - [Database Design](https://drive.google.com/file/d/1yVrjB18378ETqUxgr3wvKq_ghm55VoNV/view?usp=sharing)
-- [Swagger Editor](https://editor.swagger.io/)
+- [Swagger Editor](https://api-design-hng-0eff3e6208d2.herokuapp.com/api-docs/)
 
 ## Setup
 
@@ -22,7 +22,7 @@ This is a simple API and Database design task. The task is to design a simple AP
 
 ## API Design
 
-The API design is done using OpenAPI. The API design is available in the `documentation.yaml` file. You can view the API design in [Swagger Editor](https://editor.swagger.io/).
+The API design is done using OpenAPI. The API design is available in the `documentation.yaml` file. You can view the API design in [Swagger Editor](https://api-design-hng-0eff3e6208d2.herokuapp.com/api-docs/).
 
 ### The API design is simple and has the following endpoints:
 
