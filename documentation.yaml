@@ -4163,3 +4163,156 @@ paths:
                   message:
                     type: string
                     example: Internal Server Error
+
+  /api/content:
+    get:
+      summary: Get content by type
+      tags:
+        - Content Edit Page
+      parameters:
+        - name: contentType
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Type of content to fetch
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contentId:
+                    type: string
+                    example: 123e4567-e89b-12d3-a456-426614174000
+                  contentType:
+                    type: string
+                    example: type1
+                  contentData:
+                    type: object
+                    properties:
+                      data1:
+                        type: string
+                        example: value1
+                      data2:
+                        type: string
+                        example: value2
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2021-08-01T12:00:00Z
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /api/content/{contentId}:
+    put:
+      summary: Update contents of a content by ID
+      tags:
+        - Content Edit Page
+      parameters:
+        - name: contentId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the content to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contentType:
+                  type: string
+                  example: type1
+                contentData:
+                  type: object
+                  properties:
+                    data1:
+                      type: string
+                      example: value1
+                    data2:
+                      type: string
+                      example: value2
+      responses:
+        "200":
+          description: Content updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Content updated successfully
+                  payload:
+                    type: object
+                    properties:
+                      contentId:
+                        type: string
+                        example: 123e4567-e89b-12d3-a456-426614174000
+                      contentType:
+                        type: string
+                        example: type1
+                      contentData:
+                        type: object
+                        properties:
+                          data1:
+                            type: string
+                            example: value1
+                          data2:
+                            type: string
+                            example: value2
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: 2021-08-01T12:00:00Z
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: 2021-08-01T12:00:00Z
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Content not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
