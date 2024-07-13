@@ -2,6 +2,17 @@
 
 This is a simple API and Database design task. The task is to design a simple API and database schema using OpenAPI.
 
+## Technologies Used
+
+> - OpenAPI
+> - Swagger
+> - Draw.io
+
+## Important Links
+
+- [API Design](https://editor.swagger.io/?url=https://raw.githubusercontent.com/olajhidey/api-design-and-database-design-task/main/documentation.yaml)
+- [Database Design](https://drive.google.com/file/d/1yVrjB18378ETqUxgr3wvKq_ghm55VoNV/view?usp=sharing)
+
 ## Setup
 
 > - Clone the repository
