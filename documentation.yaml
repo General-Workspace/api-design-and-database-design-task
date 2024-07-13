@@ -254,6 +254,28 @@ components:
               - analytics
               - advertising
 
+    Marketing:
+      type: object
+      required:
+        - product
+        - company
+        - email
+        - phone
+      properties:
+        product:
+          type: string
+          example: HNG Internship
+        company:
+          type: string
+          example: HNG Tech
+        email:
+          type: string
+          format: email
+          example: janedoe@test.com
+        phone:
+          type: string
+          example: 1234567890
+
 paths:
   # Authentication API
   /auth/register:
@@ -506,7 +528,6 @@ paths:
                   message:
                     type: string
                     example: Internal Server Error
-
 
   /auth/change-password:
     put:
@@ -2569,7 +2590,7 @@ paths:
                     type: string
                     example: Internal Server Error
 
-# Notifications API
+  # Notifications API
   /notifications:
     post:
       summary: Create a new notification
@@ -2768,7 +2789,7 @@ paths:
                     type: string
                     example: Internal Server Error
 
-# Waitlist API
+  # Waitlist API
   /waitlist:
     post:
       summary: Add a user to the waitlist
@@ -2931,7 +2952,7 @@ paths:
                     type: string
                     example: Internal Server Error
 
-# Invite Link Flow
+  # Invite Link Flow
   /invite:
     post:
       summary: Generate a new invite link
@@ -3095,7 +3116,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserConsent'
+              $ref: "#/components/schemas/UserConsent"
       responses:
         "201":
           description: User consent recorded successfully
@@ -3108,7 +3129,7 @@ paths:
                     type: string
                     example: User consent recorded successfully
                   consentRecord:
-                    $ref: '#/components/schemas/UserConsent'
+                    $ref: "#/components/schemas/UserConsent"
         "400":
           description: Bad request (missing fields)
           content:
@@ -3119,6 +3140,220 @@ paths:
                   message:
                     type: string
                     example: Missing required fields
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  # Marketing
+  /api/marketing:
+    post:
+      summary: Create a new marketing campaign
+      tags:
+        - Marketing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Marketing"
+      responses:
+        "201":
+          description: Marketing campaign successfully added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Marketing campaign created successfully
+                  payload:
+                    $ref: "#/components/schemas/Marketing"
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    get:
+      summary: Get all marketing campaigns
+      tags:
+        - Marketing
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Marketing"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /api/marketing/{campaignId}:
+    get:
+      summary: Get a single marketing campaign by ID
+      tags:
+        - Marketing
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the marketing campaign to get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Marketing"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Marketing campaign not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    put:
+      summary: Update contents of a marketing campaign by ID
+      tags:
+        - Marketing
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the marketing campaign to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Marketing"
+      responses:
+        "200":
+          description: Marketing campaign updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Marketing campaign updated successfully
+                  payload:
+                    $ref: "#/components/schemas/Marketing"
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Marketing campaign not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    delete:
+      summary: Delete a marketing campaign by ID
+      tags:
+        - Marketing
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the marketing campaign to delete
+      responses:
+        "200":
+          description: Marketing campaign deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Marketing campaign deleted successfully
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Marketing campaign not found
         "500":
           description: Internal Server Error
           content:
@@ -3270,4 +3505,3 @@ paths:
                   message:
                     type: string
                     example: Internal Server Error
-  
