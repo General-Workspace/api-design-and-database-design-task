@@ -484,7 +484,7 @@ paths:
     get:
       summary: Get a single user by ID
       tags:
-        - Users
+        - User
       security:
         - bearerAuth: []
       parameters:
@@ -545,7 +545,7 @@ paths:
     post:
       summary: Add a user to an organisation
       tags:
-        - Users
+        - User
       security:
         - bearerAuth: []
       parameters:
@@ -632,7 +632,7 @@ paths:
     put:
       summary: Update a user by ID
       tags:
-        - Users
+        - User
       security:
         - bearerAuth: []
       parameters:
@@ -675,74 +675,6 @@ paths:
                   message:
                     type: string
                     example: Field cannot be empty
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: error
-                  message:
-                    type: string
-                    example: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: error
-                  message:
-                    type: string
-                    example: User not found
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: error
-                  message:
-                    type: string
-                    example: Internal Server Error
-
-  /api/{userId}:
-    delete:
-      summary: Delete a user by ID
-      tags:
-        - Users
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID of the user to delete
-      responses:
-        "200":
-          description: User deleted successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  message:
-                    type: string
-                    example: User deleted successfully
         "401":
           description: Unauthorized
           content:
