@@ -2,6 +2,12 @@
 
 This is a simple API and Database design task. The task is to design a simple API and database schema using OpenAPI.
 
+## Database Design
+
+View the database design [here](https://drive.google.com/file/d/1yVrjB18378ETqUxgr3wvKq_ghm55VoNV/view?usp=sharing)
+
+![Database Design](https://drive.google.com/uc?export=view&id=1phU3WzdU2qSJi777a6cSXbqqWR-pwgaO)
+
 ## Technologies Used
 
 > - OpenAPI
@@ -11,7 +17,7 @@ This is a simple API and Database design task. The task is to design a simple AP
 ## Important Links
 
 - [API Design](https://github.com/HNGi11/api-design-and-database-design-task/blob/main/documentation.yaml)
-- [Database Design](https://drive.google.com/file/d/1yVrjB18378ETqUxgr3wvKq_ghm55VoNV/view?usp=sharing)
+- [Database Design](https://drive.google.com/file/d/1phU3WzdU2qSJi777a6cSXbqqWR-pwgaO/view?usp=sharing)
 - [Swagger Editor](https://api-design-hng-0eff3e6208d2.herokuapp.com/api-docs/)
 
 ## Setup
@@ -56,8 +62,4 @@ The API design is done using OpenAPI. The API design is available in the `docume
     - Get All Organisations
     - Get All Messages
 
-## Database Design
-
-View the database design [here](https://drive.google.com/file/d/1yVrjB18378ETqUxgr3wvKq_ghm55VoNV/view?usp=sharing)
-
-![Database Design](https://drive.google.com/uc?export=view&id=1yVrjB18378ETqUxgr3wvKq_ghm55VoNV)
+<!-- ![Database Design](https://drive.google.com/uc?export=view&id=1yVrjB18378ETqUxgr3wvKq_ghm55VoNV) -->
