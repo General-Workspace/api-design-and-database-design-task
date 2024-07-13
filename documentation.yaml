@@ -74,6 +74,39 @@ components:
                 format: email
                 example: jane@test.com
 
+    Notification:
+      type: object
+      required:
+        - type
+        - message
+        - recipient
+
+      properties:
+        type:
+          type: string
+          example: push_notification
+        title:
+          type: string
+          example: New Message
+        message:
+          type: string
+          example: You have a new message
+        recipient:
+          type: string
+          example: jane@example.com
+        status:
+          type: string
+          enum:
+            - failed
+            - sent
+            - pending
+          example: pending
+          default: pending
+        createdAt:
+          type: string
+          format: date-time
+          example: 2021-08-01T12:00:00Z
+
     Payments:
       type: object
       required:
@@ -113,6 +146,113 @@ components:
         description:
           type: string
           example: We are a tech company
+
+    BlogPost:
+      type: object
+      required:
+        - title
+        - content
+
+      properties:
+        title:
+          type: string
+          example: My First Blog Post
+        content:
+          type: string
+          example: This is the content of my first blog post.
+        author:
+          type: string
+          example: jane@example.com
+        createdAt:
+          type: string
+          format: date-time
+          example: 2021-08-01T12:00:00Z
+
+    EmailTemplate:
+      type: object
+      required:
+        - name
+        - subject
+        - body
+
+      properties:
+        name:
+          type: string
+          example: Welcome Email
+        subject:
+          type: string
+          example: Welcome to Our Platform
+        body:
+          type: string
+          example: <h1>Hello, Welcome!</h1>
+        createdAt:
+          type: string
+          format: date-time
+          example: 2021-08-01T12:00:00Z
+
+    Waitlist:
+      type: object
+      required:
+        - firstName
+        - email
+      properties:
+        firstName:
+          type: string
+          example: Jane
+        email:
+          type: string
+          format: email
+          example: jane@example.com
+
+    InviteLink:
+      type: object
+      required:
+        - inviterId
+        - inviteToken
+        - status
+      properties:
+        inviterId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        inviteToken:
+          type: string
+          example: abcdef1234567890
+        status:
+          type: string
+          enum:
+            - failed
+            - sent
+            - pending
+          default: pending
+          example: pending
+        createdAt:
+          type: string
+          format: date-time
+          example: 2021-08-01T12:00:00Z
+
+    UserConsent:
+      type: object
+      required:
+        - userId
+        - consentGiven
+        - cookieTypesAccepted
+      properties:
+        userId:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        consentGiven:
+          type: boolean
+          example: true
+        cookieTypesAccepted:
+          type: array
+          items:
+            type: string
+            enum:
+              - functional
+              - performance
+              - targeting
+              - analytics
+              - advertising
 
 paths:
   # Authentication API
@@ -799,6 +939,1097 @@ paths:
                   status:
                     type: string
                     example: error
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  # Blog API
+  /blog:
+    post:
+      summary: Create a new blog post
+      tags:
+        - Blog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlogPost"
+      responses:
+        "201":
+          description: Blog post created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Blog post created successfully
+                  payload:
+                    $ref: "#/components/schemas/BlogPost"
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    get:
+      summary: Get all blog posts
+      tags:
+        - Blog
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /blog/{postId}:
+    get:
+      summary: Get a blog post by ID
+      tags:
+        - Blog
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the blog post to get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Blog post not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    put:
+      summary: Update a blog post by ID
+      tags:
+        - Blog
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the blog post to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlogPost"
+      responses:
+        "200":
+          description: Blog post updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Blog post updated successfully
+                  payload:
+                    $ref: "#/components/schemas/BlogPost"
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Blog post not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    delete:
+      summary: Delete a blog post by ID
+      tags:
+        - Blog
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the blog post to delete
+      responses:
+        "200":
+          description: Blog post deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Blog post deleted successfully
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Blog post not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /blog/author/{author}:
+    get:
+      summary: Get blog posts by author
+      tags:
+        - Blog
+      parameters:
+        - name: author
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Name of the author
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Blog posts not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /blog/timerange:
+    get:
+      summary: Get blog posts within a time range
+      tags:
+        - Blog
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: Start date of the time range
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: End date of the time range
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+        "400":
+          description: Bad request (invalid date format)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid date format
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Blog posts not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  # Email Template API
+  /email-templates:
+    post:
+      summary: Create a new email template
+      tags:
+        - Email Templates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailTemplate"
+      responses:
+        "201":
+          description: Email template created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email template created successfully
+                  payload:
+                    $ref: "#/components/schemas/EmailTemplate"
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    get:
+      summary: Get all email templates
+      tags:
+        - Email Templates
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EmailTemplate"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /email-templates/{templateId}:
+    get:
+      summary: Get an email template by ID
+      tags:
+        - Email Templates
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the email template to get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailTemplate"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email template not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    put:
+      summary: Update an email template by ID
+      tags:
+        - Email Templates
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the email template to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailTemplate"
+      responses:
+        "200":
+          description: Email template updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email template updated successfully
+                  payload:
+                    $ref: "#/components/schemas/EmailTemplate"
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email template not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    delete:
+      summary: Delete an email template by ID
+      tags:
+        - Email Templates
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the email template to delete
+      responses:
+        "200":
+          description: Email template deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email template deleted successfully
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email template not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+# Notifications API
+  /notifications:
+    post:
+      summary: Create a new notification
+      tags:
+        - Notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Notification"
+      responses:
+        "201":
+          description: Notification created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Notification created successfully
+                  payload:
+                    $ref: "#/components/schemas/Notification"
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /notifications/{notificationId}:
+    get:
+      summary: Get a notification by ID
+      tags:
+        - Notification
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the notification to get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Notification not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    delete:
+      summary: Delete a notification by ID
+      tags:
+        - Notification
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the notification to delete
+      responses:
+        "200":
+          description: Notification deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Notification deleted successfully
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Notification not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /notifications/{notificationId}/status:
+    patch:
+      summary: Update the status of a notification by ID
+      tags:
+        - Notification
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the notification to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - failed
+                    - sent
+                    - pending
+                  example: sent
+      responses:
+        "200":
+          description: Status updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Notification status updated successfully
+                  payload:
+                    $ref: "#/components/schemas/Notification"
+        "400":
+          description: Bad request (invalid status value)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid status value
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Notification not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+# Waitlist API
+  /waitlist:
+    post:
+      summary: Add a user to the waitlist
+      tags:
+        - Waitlist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Waitlist"
+      responses:
+        "201":
+          description: User added to the waitlist successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User added to the waitlist successfully
+                  payload:
+                    $ref: "#/components/schemas/Waitlist"
+        "409":
+          description: Conflict (user already in waitlist)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User already in waitlist
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    get:
+      summary: Get all users in the waitlist
+      tags:
+        - Waitlist
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Waitlist"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /waitlist/{userId}:
+    get:
+      summary: Get a user in the waitlist by ID
+      tags:
+        - Waitlist
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the user to get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Waitlist"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    delete:
+      summary: Remove a user from the waitlist by ID
+      tags:
+        - Waitlist
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the user to remove
+      responses:
+        "200":
+          description: User removed from the waitlist successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User removed from the waitlist successfully
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+# Invite Link Flow
+  /invite:
+    post:
+      summary: Generate a new invite link
+      tags:
+        - Invite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InviteLink"
+      responses:
+        "201":
+          description: Invite link generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invite link generated successfully
+                  payload:
+                    $ref: "#/components/schemas/InviteLink"
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Field cannot be empty
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    get:
+      summary: Get all invite links
+      tags:
+        - Invite
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InviteLink"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  /invite/{inviteId}:
+    get:
+      summary: Get an invite link by ID
+      tags:
+        - Invite
+      parameters:
+        - name: inviteId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the invite link to get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InviteLink"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invite link not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    delete:
+      summary: Delete an invite link by ID
+      tags:
+        - Invite
+      parameters:
+        - name: inviteId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the invite link to delete
+      responses:
+        "200":
+          description: Invite link deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invite link deleted successfully
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invite link not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+  # GPDR and Cookies
+  /cookie-consent:
+    post:
+      summary: Record user consent for cookie usage
+      tags:
+        - GDPR Cookies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserConsent'
+      responses:
+        "201":
+          description: User consent recorded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User consent recorded successfully
+                  consentRecord:
+                    $ref: '#/components/schemas/UserConsent'
+        "400":
+          description: Bad request (missing fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Missing required fields
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   message:
                     type: string
                     example: Internal Server Error
